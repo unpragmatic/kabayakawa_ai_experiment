@@ -26,7 +26,7 @@ function Main() {
     const sims = 100000;
     for (let i = 0; i < sims; i++) {
         const starting_player = Math.floor(Math.random() * player_count);
-        const [winner_ids, wallets] = SimGame(player_count, player_controllers, starting_player);
+        const [winner_ids, wallets] = SimGame(player_controllers, starting_player);
 
         // Adjust stats
         for (const winner_id of winner_ids) {

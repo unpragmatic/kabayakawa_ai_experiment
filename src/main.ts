@@ -1,4 +1,5 @@
 import { SimGame } from './game';
+import { CreateAlphaPlayer } from './players/alpha_controller';
 import { CreateRandomPlayer } from './players/random_player';
 import { CreateSimpleAIPlayer } from './players/simple_ai_controller';
 import { ArrayFill, ArrayRange } from './utils';
@@ -12,7 +13,7 @@ interface Stats {
 function Main() {
     console.log("Start")
     const player_controllers = [
-        CreateSimpleAIPlayer(0),
+        CreateAlphaPlayer(0),
         CreateRandomPlayer(1),
         CreateRandomPlayer(2),
         CreateRandomPlayer(3)

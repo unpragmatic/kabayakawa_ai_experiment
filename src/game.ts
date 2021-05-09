@@ -1,6 +1,6 @@
 import { ExtractGameInformation, GameInformation } from "./game_information";
 import { PlayerController } from "./players/player_controller";
-import { CreateGameState, CreateRoundState, StakeEvent } from "./state";
+import { CreateGameState, CreateRoundState, RoundState, StakeEvent } from "./state";
 import { GetAndRemoveRandomElementFromSet } from "./utils";
 
 export function SimGame(
@@ -45,7 +45,14 @@ export function SimRound(
 ): [winner: number, wallet_delta: number[]]
 {
     const round_state = CreateRoundState(player_controllers.length, starting_player, pot, player_wallet);
+    return SimRoundState(round_state, player_controllers);
+}
 
+export function SimRoundState(
+    round_state: RoundState,
+    player_controllers: PlayerController[]
+): [winner: number, wallet_delta: number[]] 
+{
     while (round_state.phase !== 'END') {
         if (round_state.phase === 'DISCARD') {
             // Collecting relevant player information
@@ -72,7 +79,7 @@ export function SimRound(
                 discard: discard
             })
             round_state.current_player = (round_state.current_player + 1) % round_state.player_count;
-            if (round_state.current_player === starting_player) {
+            if (round_state.current_player === round_state.starting_player) {
                 round_state.phase = 'STAKE';
             }
         } else if (round_state.phase === 'STAKE') {
@@ -87,7 +94,7 @@ export function SimRound(
             const stake = player_controller.StakeHandler(current_player_hand, game_information);
 
             // Validate execution
-            if (stake && pot > current_player_wallet) {
+            if (stake && round_state.pot > current_player_wallet) {
                 throw `Player ${current_player} does not have sufficient balance to stake.`
             }
 
@@ -135,7 +142,7 @@ export function SimRound(
     // If it's a draw then the player who moves first wins.
     let winner_id;
     if (min_player_hand_and_kabayakawa == max_player_hand) {
-        const turn_number = (player_id: number) => (player_id + round_state.player_count - starting_player) % round_state.player_count;
+        const turn_number = (player_id: number) => (player_id + round_state.player_count - round_state.starting_player) % round_state.player_count;
         winner_id = turn_number(min_player_id) < turn_number(max_player_id) ? min_player_id : max_player_id;
     } else {
         winner_id = max_player_hand < min_player_hand_and_kabayakawa ? min_player_id : max_player_id;

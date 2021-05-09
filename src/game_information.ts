@@ -6,6 +6,7 @@ export interface GameInformation {
     player_wallets: number[]
     round_pot: number
     starting_player: number
+    player_count: number
 }
 
 export function ExtractGameInformation(round_state: RoundState): GameInformation {
@@ -14,6 +15,7 @@ export function ExtractGameInformation(round_state: RoundState): GameInformation
         events: round_state.events,
         player_wallets: round_state.player_wallets,
         round_pot: round_state.pot,
-        starting_player: round_state.starting_player
+        starting_player: round_state.starting_player,
+        player_count: round_state.player_count
     }
 }

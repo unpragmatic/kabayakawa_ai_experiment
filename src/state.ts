@@ -2,12 +2,14 @@ import { GetAndRemoveRandomElementFromSet } from "./utils";
 
 export type Card = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15
 
+export type RoundStatePhase = 'DISCARD' | 'STAKE' | 'END'
+
 export interface RoundState {
     player_count: number
     player_wallets: number[]
     starting_player: number
     current_player: number
-    phase: 'DISCARD' | 'STAKE' | 'END'
+    phase: RoundStatePhase
     pot: number
     kabayakawa: Card
     deck: Set<Card>
@@ -37,8 +39,12 @@ export interface StakeEvent {
 
 export type PlayerEvent = DiscardEvent | StakeEvent
 
+export function CreateDeck(): Set<Card> {
+    return new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15] as Card[]);
+}
+
 export function CreateRoundState(player_count: number, starting_player: number, pot: number, player_wallet: number[]): RoundState {
-    const initial_deck: Set<Card> = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15] as Card[]);
+    const initial_deck: Set<Card> = CreateDeck();
     let [kabayakawa, deck] = GetAndRemoveRandomElementFromSet(initial_deck);
 
     const player_hand: Card[] = []

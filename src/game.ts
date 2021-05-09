@@ -1,5 +1,6 @@
+import { ExtractGameInformation, GameInformation } from "./game_information";
 import { PlayerController } from "./players/player_controller";
-import { CreateGameState, CreateRoundState, GameInformation, StakeEvent } from "./state";
+import { CreateGameState, CreateRoundState, StakeEvent } from "./state";
 import { GetAndRemoveRandomElementFromSet } from "./utils";
 
 export function SimGame(
@@ -50,15 +51,10 @@ export function SimRound(
             // Collecting relevant player information
             const current_player = round_state.current_player;
             const current_hand = round_state.player_hand[current_player];
-            const game_information: GameInformation = {
-                kabayakawa: round_state.kabayakawa,
-                events: round_state.events,
-                player_wallets: round_state.player_wallets,
-                round_pot: round_state.pot
-            }
 
             // Turn execution
             const player_controller = player_controllers[current_player];
+            const game_information = ExtractGameInformation(round_state);
             const [randomCard, newDeck] = GetAndRemoveRandomElementFromSet(round_state.deck);
             const [newHand, discard] = player_controller.DiscardHandler(current_hand, randomCard, game_information)
 
@@ -84,15 +80,10 @@ export function SimRound(
             const current_player = round_state.current_player;
             const current_player_wallet = round_state.player_wallets[current_player];
             const current_player_hand = round_state.player_hand[current_player];
-            const game_information: GameInformation = {
-                kabayakawa: round_state.kabayakawa,
-                events: round_state.events,
-                player_wallets: round_state.player_wallets,
-                round_pot: round_state.pot
-            }
 
             // Turn execution   
             const player_controller = player_controllers[current_player];
+            const game_information = ExtractGameInformation(round_state);
             const stake = player_controller.StakeHandler(current_player_hand, game_information);
 
             // Validate execution

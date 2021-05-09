@@ -1,4 +1,5 @@
-import { Card, GameInformation } from "../state"
+import { GameInformation } from "../game_information"
+import { Card } from "../state"
 
 export type DiscardHandler = (hand: Card, deal: Card, info: GameInformation) => [hand: Card, discard: Card]
 export type StakeHandler = (hand: Card, info: GameInformation) => boolean

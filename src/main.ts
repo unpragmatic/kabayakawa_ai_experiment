@@ -1,5 +1,6 @@
 import { SimGame } from './game';
 import { CreateRandomPlayer } from './players/random_player';
+import { CreateSimpleAIPlayer } from './players/simple_ai_controller';
 import { ArrayFill, ArrayRange } from './utils';
 
 interface Stats {
@@ -10,15 +11,18 @@ interface Stats {
 
 function Main() {
     console.log("Start")
-    const player_count = 4;
+    const player_controllers = [
+        CreateSimpleAIPlayer(0),
+        CreateRandomPlayer(1),
+        CreateRandomPlayer(2),
+        CreateRandomPlayer(3)
+    ]
+    const player_count = player_controllers.length;
     const stats: Stats = {
         wins: ArrayFill(0, player_count),
         draws: 0,
         starts: ArrayFill(0, player_count)
     }
-    const player_controllers = ArrayRange(4).map(
-        i => CreateRandomPlayer(i)
-    )
 
     const sims = 100000;
     for (let i = 0; i < sims; i++) {

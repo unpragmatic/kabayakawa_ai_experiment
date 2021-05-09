@@ -1,6 +1,7 @@
-import { Card, GameInformation } from "../state";
+import { Card } from "../state";
 import { PlayerController, DiscardHandler, StakeHandler } from "./player_controller";
 import readline from "readline-sync";
+import { GameInformation } from "../game_information";
 
 
 function DisplayGameInfo(player_id: number, info: GameInformation) {

@@ -16,3 +16,18 @@ export function GetAndRemoveRandomElementFromSet<T>(set: Set<T>): [T, Set<T>] {
     return [randomElement, new Set(newElements)]
 }
 
+export function ArrayRange(end: number) {
+    const result = [];
+    for (let i = 0; i < end; i++) {
+        result.push(i);
+    }
+    return result;
+}
+
+export function ArrayFill(value: number, length: number) {
+    const result = []
+    for (let i = 0; i < length; i++) {
+        result.push(value);
+    }
+    return result;
+}

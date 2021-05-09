@@ -131,6 +131,7 @@ export function SimRound(player_count: number, starting_player: number, pot: num
             return player_hand > max_player_hand ? [player_id, player_hand] : [max_player_id, max_player_hand]
         })
     const min_player_hand_and_kabayakawa = min_player_hand + round_state.kabayakawa;
+
     // If it's a draw then the player who moves first wins.
     let winner_id;
     if (min_player_hand_and_kabayakawa == max_player_hand) {

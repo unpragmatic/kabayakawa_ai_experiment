@@ -3,14 +3,16 @@ import { CreateRandomPlayer } from './players/random_player';
 
 interface Stats {
     wins: number[]
+    draws: number
     starts: number[]
 }
 
 function Main() {
     console.log("Start")
     const player_count = 4;
-    const stats = {
+    const stats: Stats = {
         wins: [0, 0, 0, 0],
+        draws: 0,
         starts: [0,0,0,0]
     }
     const player_controllers = [
@@ -31,6 +33,9 @@ function Main() {
             stats.wins[winner_id] += 1;
         }
         stats.starts[starting_player] += 1;
+        if (winner_ids.length > 1) {
+            stats.draws += 1;
+        }
 
         if (i % 10000 === 0) {
             console.log(i)
@@ -42,9 +47,10 @@ function Main() {
 }
 
 function DisplayStats(stats: Stats) {
-    const { wins, starts } = stats;
+    const { wins, draws, starts } = stats;
 
     console.log(`wins: ${wins}, sum: ${wins.reduce((a, b) => a + b)}`);
+    console.log(`draws: ${draws}`)
     console.log(`starts: ${starts}, sum: ${starts.reduce((a, b) => a + b)}`);
 }
 

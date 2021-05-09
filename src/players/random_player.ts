@@ -1,5 +1,4 @@
-import { DiscardHandler, PlayerController, StakeHandler } from "./main";
-import { Card } from "./state";
+import { PlayerController, DiscardHandler, StakeHandler } from "./player_controller";
 
 
 export function CreateRandomPlayer(player_id: number): PlayerController {

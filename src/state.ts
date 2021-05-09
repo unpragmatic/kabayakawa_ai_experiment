@@ -37,6 +37,13 @@ export interface StakeEvent {
 
 export type PlayerEvent = DiscardEvent | StakeEvent
 
+export interface GameInformation {
+    kabayakawa: Card
+    events: PlayerEvent[]
+    player_wallets: number[]
+    round_pot: number
+}
+
 export function CreateRoundState(player_count: number, starting_player: number, pot: number, player_wallet: number[]): RoundState {
     const initial_deck: Set<Card> = new Set([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15] as Card[]);
     let [kabayakawa, deck] = GetAndRemoveRandomElementFromSet(initial_deck);

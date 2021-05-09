@@ -1,23 +1,8 @@
-import { CreateRandomPlayer } from './random_player';
-import { GameState, RoundState, CreateGameState, CreateRoundState, Card, PlayerEvent, StakeEvent } from './state'
-import { GetAndRemoveRandomElementFromSet } from './utils'
+import { PlayerController } from "./players/player_controller";
+import { CreateGameState, CreateRoundState, GameInformation, StakeEvent } from "./state";
+import { GetAndRemoveRandomElementFromSet } from "./utils";
 
-export interface GameInformation {
-    kabayakawa: Card
-    events: PlayerEvent[]
-    player_wallets: number[]
-    round_pot: number
-}
-
-export type DiscardHandler = (hand: Card, deal: Card, info: GameInformation) => [hand: Card, discard: Card]
-export type StakeHandler = (hand: Card, info: GameInformation) => boolean
-
-export interface PlayerController {
-    DiscardHandler: DiscardHandler
-    StakeHandler: StakeHandler
-}
-
-function SimGame(player_count: number, player_controllers: PlayerController[], starting_player: number): [winner_ids: number[], wallets: number[]] {
+export function SimGame(player_count: number, player_controllers: PlayerController[], starting_player: number): [winner_ids: number[], wallets: number[]] {
     const max_rounds = 7;
     const game_state = CreateGameState(player_count, max_rounds, starting_player);
 
@@ -48,7 +33,7 @@ function SimGame(player_count: number, player_controllers: PlayerController[], s
     return [winner_ids, game_state.player_wallet];
 }
 
-function SimRound(player_count: number, starting_player: number, pot: number, player_wallet: number[], player_controllers: PlayerController[]): [winner: number, wallet_delta: number[]] {
+export function SimRound(player_count: number, starting_player: number, pot: number, player_wallet: number[], player_controllers: PlayerController[]): [winner: number, wallet_delta: number[]] {
     const round_state = CreateRoundState(player_count, starting_player, pot, player_wallet);
 
     while (round_state.phase !== 'END') {
@@ -168,34 +153,3 @@ function SimRound(player_count: number, starting_player: number, pot: number, pl
     }
     return [winner_id, wallet_deltas]
 }
-
-
-
-function Main() {
-    console.log("Start")
-    const player_count = 4;
-    const wins = []
-    const player_controllers = []
-    for (let i = 0; i < player_count; i++) {
-        wins.push(0);
-        player_controllers.push(CreateRandomPlayer(i));
-    }
-
-    console.log("Start")
-    const sims = 100000;
-    for (let i = 0; i < sims; i++) {
-        const [winner_ids, wallets] = SimGame(player_count, player_controllers, Math.floor(Math.random() * player_count));
-        for (const winner_id of winner_ids) {
-            wins[winner_id] += 1;
-        }
-
-        if (i % 10000 === 0) {
-            console.log(i)
-        }
-    }
-
-    console.log("end")
-    console.log(`wins: ${wins}, sum: ${wins.reduce((a, b) => a + b)}`);
-}
-
-Main();

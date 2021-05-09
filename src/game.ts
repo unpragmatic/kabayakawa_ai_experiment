@@ -2,7 +2,11 @@ import { PlayerController } from "./players/player_controller";
 import { CreateGameState, CreateRoundState, GameInformation, StakeEvent } from "./state";
 import { GetAndRemoveRandomElementFromSet } from "./utils";
 
-export function SimGame(player_controllers: PlayerController[], starting_player: number): [winner_ids: number[], wallets: number[]] {
+export function SimGame(
+    player_controllers: PlayerController[],
+    starting_player: number
+): [winner_ids: number[], wallets: number[]]
+{
     const max_rounds = 7;
     const game_state = CreateGameState(player_controllers.length, max_rounds, starting_player);
 
@@ -32,7 +36,13 @@ export function SimGame(player_controllers: PlayerController[], starting_player:
     return [winner_ids, game_state.player_wallet];
 }
 
-export function SimRound(starting_player: number, pot: number, player_wallet: number[], player_controllers: PlayerController[]): [winner: number, wallet_delta: number[]] {
+export function SimRound(
+    starting_player: number,
+    pot: number,
+    player_wallet: number[],
+    player_controllers: PlayerController[]
+): [winner: number, wallet_delta: number[]]
+{
     const round_state = CreateRoundState(player_controllers.length, starting_player, pot, player_wallet);
 
     while (round_state.phase !== 'END') {
@@ -134,7 +144,7 @@ export function SimRound(starting_player: number, pot: number, player_wallet: nu
     // If it's a draw then the player who moves first wins.
     let winner_id;
     if (min_player_hand_and_kabayakawa == max_player_hand) {
-        const turn_number = (player_id: number) => player_id + round_state.player_count - starting_player % round_state.player_count;
+        const turn_number = (player_id: number) => (player_id + round_state.player_count - starting_player) % round_state.player_count;
         winner_id = turn_number(min_player_id) < turn_number(max_player_id) ? min_player_id : max_player_id;
     } else {
         winner_id = max_player_hand < min_player_hand_and_kabayakawa ? min_player_id : max_player_id;
